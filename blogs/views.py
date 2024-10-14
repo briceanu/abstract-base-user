@@ -1,11 +1,12 @@
 from rest_framework.mixins import CreateModelMixin, ListModelMixin,UpdateModelMixin
 from rest_framework.generics import GenericAPIView
+from rest_framework.viewsets import ViewSet 
 from .serializers import BlogModelSerializer
 from .models import BlogModel
 from rest_framework.permissions import IsAuthenticated 
 from rest_framework.response import Response
 from rest_framework import status
-from .permissions import AgePermission
+from .permissions import AgePermission ,IsAuthenticatedAndOwner
 from rest_framework.exceptions import NotFound
 
 
@@ -48,8 +49,6 @@ class ListCreateBlog(GenericAPIView,ListModelMixin,CreateModelMixin,UpdateModelM
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST) 
 
 
-
-
     def get_permissions(self):
         """
         Assign different permissions based on the HTTP method.
@@ -70,3 +69,25 @@ class ListCreateBlog(GenericAPIView,ListModelMixin,CreateModelMixin,UpdateModelM
             permission_classes = self.permission_classes
         return [permission() for permission in permission_classes]
 
+
+#  remove a blog 
+
+
+
+
+class RemoveBlog(GenericAPIView):
+    permission_classes =[IsAuthenticatedAndOwner]
+
+    def delete(self, request):
+        pk = self.request.query_params.get('id')
+        if not pk:
+            return Response({'error': 'ID parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            blog = BlogModel.objects.get(id=pk)
+        except BlogModel.DoesNotExist:
+            raise NotFound(detail=f'No blog with id {pk} found')
+        
+        self.check_object_permissions(request, blog)
+        blog.delete()
+        return Response({'success': 'Blog deleted'}, status=status.HTTP_204_NO_CONTENT)

@@ -4,17 +4,17 @@ import sys
 
 
 def create_blog():
-    url = 'http://127.0.0.1:8000/blog/list_create_blogs'
+    url = 'http://127.0.0.1:8000/blog/list_create_blogs/'
 
     data = {
     'username': 'costica',
-    'details': 'i this pawodmapowd mapwod mpaw    ',
-    'age': 45
+    'details': 'this is the second costica',
+    'age': 39
  }
 
 
     headers = {
-    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI4NTE0OTk1LCJpYXQiOjE3Mjg1MTEzOTUsImp0aSI6IjhhYTBiM2QxODQxNTRmZTk4NDQ3YTUyMjVkZTczYTkwIiwidXNlcm5hbWUiOiJjb3N0aWNhIn0.jvtLoATTTzeGMye1UWy5Uf1bk7iOVEFyxMh_mhuYPLI"
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI4ODMwMzc4LCJpYXQiOjE3Mjg4MjY3NzgsImp0aSI6ImQyOGQ5NTJmZGExMzRiYjU5Mzk4ZThkYWRmYzNjZTVhIiwidXNlcm5hbWUiOiJhZHJpYW4ifQ.5uwZiDkNu3lqHHAlvLuc0hjtMTtnwi5WEOcLYehfTz4"
     }
     res = requests.post(url=url, headers=headers,data=data)
 
@@ -29,7 +29,7 @@ def list_blogs():
 
 
     headers = {
-    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI4NTE0NDczLCJpYXQiOjE3Mjg1MTA4NzMsImp0aSI6IjhjNTdhMTRlMDkxMDQ3YWU5NDQ3YTdhYTIwYTIyYjliIiwidXNlcm5hbWUiOiJjb3N0aWNhIn0.M8C9k359WH3K1d63Kcq0HEWmV3StqBJi0RUt8HTVSYM"
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI4OTE0MTk5LCJpYXQiOjE3Mjg5MTA1OTksImp0aSI6IjA3MDUzNDI3ZDk4NjRlZGE4MDJkNmRmYjRjMWVmNWIxIiwidXNlcm5hbWUiOiJhZHJpYW4ifQ.gTUoMitAnzeXXJKCwkx14w1AOHqyH2mfeHjMwCgj3Ps"
     }
 
     res = requests.get(url=url, headers=headers)
@@ -40,7 +40,7 @@ def list_blogs():
 
 
 def update_blog():
-    url = 'http://127.0.0.1:8000/blog/list_create_blogs?id=5'
+    url = 'http://127.0.0.1:8000/blog/list_create_blogs?id=1'
 
     data = {
     'username': 'costica',
@@ -57,14 +57,41 @@ def update_blog():
     print(res.url)
     print(res.text)
 
+
+
+
+
+
+def remove_blog():
+    url = f'http://127.0.0.1:8000/blog/remove_blog?id={sys.argv[2]}'
+
+    headers = {
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzI4OTE0MTk5LCJpYXQiOjE3Mjg5MTA1OTksImp0aSI6IjA3MDUzNDI3ZDk4NjRlZGE4MDJkNmRmYjRjMWVmNWIxIiwidXNlcm5hbWUiOiJhZHJpYW4ifQ.gTUoMitAnzeXXJKCwkx14w1AOHqyH2mfeHjMwCgj3Ps"
+    }
+
+    res = requests.delete(url=url,headers=headers)
+
+    print(res.status_code)
+    print(res.url)
+    print(res.text)
+
+# got adrian and remove costica
+
+
+
+
 if __name__ == "__main__":
     if sys.argv[1] == 'create_blog':
         create_blog()
 
-    if sys.argv[1] == 'list_blogs':
+    elif sys.argv[1] == 'list_blogs':
         list_blogs()
-    if sys.argv[1] == 'update_blog':
+
+    elif sys.argv[1] == 'update_blog':
         update_blog()
+    
+    elif sys.argv[1] == 'remove_blog':
+        remove_blog()
 
     else:
         exit(0) 
